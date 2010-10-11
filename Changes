@@ -1,5 +1,11 @@
 Revision history for Perl extension Net::DNS::ZoneParse.
 
+0.0101 Mon Oct 11 18:17:25 2010
+	- Fixed POD-Namespace in Net::DNS::ZoneParse::Generator::Native
+	- Fixed missing dependency on Class::Accessor
+	- Cleanup Headings for methods
+	- Added Support for Net::DNS::Zone::Parser through NetDNSZoneParser
+
 0.01  Sat Oct  2 15:28:22 2010
 	- original version; created by h2xs 1.23 with options
 		-XA -n Net::DNS::ZoneParse -b 5.8.0

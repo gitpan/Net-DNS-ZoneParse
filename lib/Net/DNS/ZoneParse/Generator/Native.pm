@@ -7,13 +7,13 @@ use vars qw($VERSION);
 
 use Net::DNS;
 
-$VERSION = 0.10;
+$VERSION = 0.101;
 
 =pod
 
 =head1 NAME
 
-Net::DNS::ZoneParse::Parser::Native - Net::DNS::ZoneParse's native parser.
+Net::DNS::ZoneParse::Generator::Native - Net::DNS::ZoneParse's native generator.
 
 =head1 DESCRIPTION
 

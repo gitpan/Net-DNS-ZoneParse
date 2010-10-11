@@ -1,5 +1,5 @@
-Net-DNS-ZoneParse version 0.01
-==============================
+Net-DNS-ZoneParse version 0.0101
+================================
 
 Net::DNS::ZoneParse can be used to parse or write BIND-compatible Zonefiles.
 The zone can be accessed as a array of Net::DNS::RR-objects or be handled via

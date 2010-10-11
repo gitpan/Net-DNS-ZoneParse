@@ -155,7 +155,9 @@ sub _dns_parse_line {
 
 =head2 EXPORT
 
-=head3 $rr = Net::DNS::ZoneParse::Parser::Native->parse($param)
+=head3 parse
+
+	$rr = Net::DNS::ZoneParse::Parser::Native->parse($param)
 
 This is the real parsing-routine, used by Net::DNS::ZoneParse.
 
@@ -181,7 +183,9 @@ sub parse {
 
 =pod
 
-=head3 $item = dns_next_item($line[, $default])
+=head3 dns_next_item
+
+	$item = dns_next_item($line[, $default])
 
 This will return the next item on the given line. If default is given and
 the line is empty or starts with blanks, $default is returned.

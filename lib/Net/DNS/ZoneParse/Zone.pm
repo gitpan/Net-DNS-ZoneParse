@@ -36,7 +36,9 @@ this zone and write them back transperantly.
 
 =head2 METHODS
 
-=head3 $zone = Net::DNS::ZoneParse::Zone->new("example.com" [, $param]);
+=head3 new
+
+	$zone = Net::DNS::ZoneParse::Zone->new("example.com" [, $param]);
 
 returns a new Zone-object. The first parameter is the domain-name or origin
 of that zone, the optional second is a hash-reference of one or more
@@ -89,7 +91,9 @@ sub new {
 
 =pod
 
-=head3 $zone->load()
+=head3 load
+
+	$zone->load()
 
 Will open the corresspondig file and parse it, intializing the array
 of resource records
@@ -116,7 +120,9 @@ sub load {
 
 =pod
 
-=head3 $zone->save();
+=head3 save
+
+	$zone->save();
 
 will write back the contents of the zone to the corresponding filename
 
@@ -132,7 +138,9 @@ sub save {
 
 =pod
 
-=head3 $zonetext = $zone->string();
+=head3 string
+
+	$zonetext = $zone->string();
 
 string will return the contents of a zonefile representing the current state of
 the zone.
@@ -153,7 +161,9 @@ sub string {
 
 =pod
 
-=head3 $zone->add($rr)
+=head3 add
+
+	$zone->add($rr)
 
 add can be used to add further resource records to the zone
 
@@ -195,7 +205,9 @@ sub _findffunc {
 
 =pod
 
-=head3 $zone->delete($rr)
+=head3 delete
+
+	$zone->delete($rr)
 
 deletes the given RR from the zone. If no RR is given, the zone will be purged.
 The RR can either be given as a Net::DNS::RR-object, in this case, the 
@@ -218,7 +230,9 @@ sub delete {
 
 =pod
 
-=head3 $zone->replace($old, $new)
+=head3 replace
+
+	$zone->replace($old, $new)
 
 Replaces all RRs of the zone matching $old by the Net::DNS::RR-object given in
 $new. $old is handled in the same way as $rr in the delete-method. If $new

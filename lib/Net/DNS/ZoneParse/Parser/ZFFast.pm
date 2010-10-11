@@ -6,6 +6,7 @@ use warnings;
 use vars qw($VERSION);
 
 use Net::DNS;
+use Net::DNS::ZoneFile::Fast;
 
 $VERSION = 0.10;
 
@@ -24,7 +25,9 @@ common RRs; though not all are supported.
 
 =head2 EXPORT
 
-=head3 $rr = Net::DNS::ZoneParse::Parser::ZFFast->parse($param)
+=head3 parse
+
+	$rr = Net::DNS::ZoneParse::Parser::ZFFast->parse($param)
 
 This will be called by Net::DNS::ZoneParse
 
@@ -32,8 +35,6 @@ This will be called by Net::DNS::ZoneParse
 
 sub parse {
 	my ($self, $param) = @_;
-	eval { require Net::DNS::ZoneFile::Fast };
-	return if $@;
 	return Net::DNS::ZoneFile::Fast::parse(
 		fh => $param->{fh},
 	       	origin => $param->{origin},

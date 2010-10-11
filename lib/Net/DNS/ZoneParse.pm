@@ -10,7 +10,7 @@ use Net::DNS;
 use Net::DNS::ZoneParse::Zone;
 
 @ISA = qw(Exporter);
-$VERSION = 0.10;
+$VERSION = 0.101;
 @EXPORT = qw( );
 %EXPORT_TAGS = (
 	parser => [ qw( parse writezone ) ],
@@ -109,6 +109,7 @@ sub _parser_param {
 	$param->{nocache} = $self->{conf}->{nocache} unless $param->{nocache};
 	$param->{parser} = $self->{conf}->{parser} || [ qw( Native ) ]
        		unless $param->{parser};
+	$param->{parser_args} = {} unless $param->{parser_args};
 	$param->{self} = $self;
 	return $param;
 }
@@ -117,7 +118,9 @@ sub _parser_param {
 
 =head2 METHODS
 
-=head3 $parser = Net::DNS::ZoneParse->new( [ $config ] )
+=head3 new
+
+	$parser = Net::DNS::ZoneParse->new( [ $config ] )
 
 Creating a new Net::DNS::ZoneParse object with the given configuration
 for file-autoloading. The following parameters are currently supported:
@@ -178,7 +181,9 @@ sub new {
 	return bless({conf => \%conf});
 }
 
-=head3 $zone = $parser->zone("example.com" [, $param])
+=head3 zone
+
+	$zone = $parser->zone("example.com" [, $param])
 
 Returns the Net::DNS::ZoneParse::Zone object for the given domain. If there
 where no corresponding zonefile found, an empty Object will be returned.
@@ -225,7 +230,9 @@ sub zone {
 
 =pod
 
-=head3 $parser->extent("example.com", $rrs)
+=head3 extent
+
+	$parser->extent("example.com", $rrs);
 
 Extent the cached entries for the given origin - "example.com" in the example
 by the RRs given in $rrs. These might be an array or a reference to an array
@@ -245,7 +252,11 @@ sub extent {
 
 =head2 EXPORT
 
-=head3 $zonetext = writezone($rr) or $zonetext = $parser->writezone($zone)
+=head3 writezone
+
+	$zonetext = writezone($rr);
+	# or
+	$zonetext = $parser->writezone($zone);
 
 $rr might be either an array of Net::DNS::RR object, or a reference to them.
 If using the object-oriented interface, this can be used to by just using
@@ -303,7 +314,11 @@ sub writezone {
 	return undef;
 }
 
-=head3 $rr = parse($file) or $rr = $parser->parse($file [, $param [, $rrin]])
+=head3 parse
+
+	$rr = parse($file);
+	# or
+	$rr = $parser->parse($file [, $param [, $rrin]]);
 
 parse a specific zonefile and returns a reference to an array of 
 Net::DNS::RR objects.
@@ -356,9 +371,11 @@ sub parse {
 
 	my $ret;
 	for(@{$param->{parser}}) {
+		my $parser = $_;
 		my $mod = "Net::DNS::ZoneParse::Parser::$_";
 		eval "require $mod"; 
 		next if $@;
+		$param->{parser_arg} = $param->{parser_args}->{$parser} || {};
 		$ret = $mod->parse($param);
 		next unless $ret;
 		last;
