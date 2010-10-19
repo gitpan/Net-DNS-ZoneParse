@@ -1,4 +1,4 @@
-package Net::DNS::ZoneParse::Parser::ZFFast;
+package Net::DNS::ZoneParse::Parser::NetDNSZoneFileFast;
 
 use 5.008000;
 use strict;
@@ -14,12 +14,12 @@ $VERSION = 0.10;
 
 =head1 NAME
 
-Net::DNS::ZoneParse::Parser::ZFFast - Glue for Net::DNS::ZoneParse to use
-Net::DNS::ZoneFile::Fast.
+Net::DNS::ZoneParse::Parser::NetDNSZoneFileFast - Glue for Net::DNS::ZoneParse
+to use Net::DNS::ZoneFile::Fast.
 
 =head1 DESCRIPTION
 
-ZFFast uses Net::DNS::ZoneFile::Fast as parsing engine. This provides an
+NetDNSZoneFileFast uses Net::DNS::ZoneFile::Fast as parsing engine. This provides an
 Interface to a fast parser with support for most directives and the most
 common RRs; though not all are supported.
 
@@ -27,7 +27,7 @@ common RRs; though not all are supported.
 
 =head3 parse
 
-	$rr = Net::DNS::ZoneParse::Parser::ZFFast->parse($param)
+	$rr = Net::DNS::ZoneParse::Parser::NetDNSZoneFileFast->parse($param)
 
 This will be called by Net::DNS::ZoneParse
 

@@ -67,6 +67,15 @@ sub new_from_filestring {
 		$self->dns_fqdn($data, $param->{origin}));
 }
 
+package Net::DNS::RR::NS;
+
+sub new_from_filestring {
+	my ($self, $ele, $data, $param) = @_;
+	return $self->new_from_string($ele,
+		$self->dns_fqdn($data, $param->{origin}));
+}
+
+
 package Net::DNS::RR::SOA;
 
 sub new_serial {

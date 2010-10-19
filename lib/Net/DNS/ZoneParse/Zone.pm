@@ -6,7 +6,7 @@ use vars qw($VERSION);
 use Net::DNS::ZoneParse;
 use base qw(Class::Accessor);
 
-$VERSION = 0.10;
+$VERSION = 0.102;
 
 __PACKAGE__->mk_accessors(qw/rr ttl/);
 
@@ -192,11 +192,11 @@ sub add {
 sub _findffunc {
 	my ($rr) = @_;
 
-	return sub { $_->string ne $rr->string } if(ref($rr) eq "Net::DNS::RR");
+	return sub { $_[0]->string ne $_[1]->string } if(ref($rr) eq "Net::DNS::RR");
 	return sub {
-		my $item = $_;
-		for(keys(%{$rr})) {
-			return 1 if($rr->{$_} ne $item->{$_});
+		my $item = $_[0];
+		for(keys(%{$_[1]})) {
+			return 1 if($_[1]->{$_} ne $_[0]->{$_});
 		}
 		return undef;
 	} if(ref($rr) eq "HASH");
@@ -225,7 +225,7 @@ sub delete {
 	}
 	my $ffunc = _findffunc($rr);
 
-	$self->{rr} = [ grep &$ffunc(), @{$self->{rr}} ];
+	$self->{rr} = [ grep &$ffunc($_,$rr), @{$self->{rr}} ];
 }
 
 =pod
@@ -245,7 +245,25 @@ sub replace {
 	return unless($rr);
 	return $self->delete($rr) unless($new);
 	my $ffunc = _findffunc($rr);
-	$self->{rr} = [ map { &$ffunc()? $_ :$new } @{$self->{rr}}];
+	$self->{rr} = [ map { &$ffunc($_,$rr)? $_ :$new } @{$self->{rr}}];
+}
+
+=head3 delall
+
+	$zone->delall();
+
+Deletes all parsed resource records and deletes the corresponding zonefile from
+disk.
+
+=cut
+
+sub delall {
+	my ($self) = @_;
+
+	unlink($self->{filename})
+       		if($self->{filename} and -f $self->{filename});
+	$self->{rr} = [];
+	$self->{parent}->uncache($self->{zone}) if($self->{parent});
 }
 
 =head1 SEE ALSO

@@ -110,7 +110,7 @@ sub _dns_find_name {
 # parse one (chomped) line of the file
 sub _dns_parse_line {
 	my ($self, $line, $param, $ret, $lnr, $name) = @_;
-	$name = _dns_find_name($line, $name, $param);
+	$name = _dns_find_name($line, $name?$name.".":$name , $param);
 	if(substr($name, 0, 1) eq '$') {
 		my $directive = substr($name,1);
 		unless ($_dns_directives{$directive}) {

@@ -3,9 +3,7 @@
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
-
-use Test::More tests => 3;
+use Test::More tests => 4;
 BEGIN { use_ok('Net::DNS::ZoneParse', qw(:parser)) };
 
 #########################
@@ -28,6 +26,34 @@ my $rrs = [
 ];
 
 is(writezone($rrs), $result, "Export using Function-Interface");
+
+SKIP: {
+	eval { require DNS::ZoneParse };
+	skip "DNS::ZoneParse isn't installed", 1 if $@;
+	my $dzpres = <<"DZPRR";
+;
+;  Database file unknown for  zone.
+;	Zone version: 
+;
+
+
+			IN  SOA    (
+					; serial number
+					; refresh
+					; retry
+					; expire
+					; minimum TTL
+				)
+;
+; Zone NS Records
+;
+
+bar.example.com	0	IN	A	10.0.0.1
+foo.example.com	0	IN	CNAME	bar.example.com
+DZPRR
+	is(writezone($rrs, { generator => [ qw( DNSZoneParse ) ] }), $dzpres,
+		"Generating file using DNS::ZoneParse");
+};
 
 my $zoneparse = Net::DNS::ZoneParse->new();
 $zoneparse->extent("example.com", $rrs);

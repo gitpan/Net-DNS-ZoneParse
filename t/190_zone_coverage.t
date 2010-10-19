@@ -1,4 +1,4 @@
-use Test::More tests => 9;
+use Test::More tests => 11;
 use Test::Deep;
 
 my $module;
@@ -55,7 +55,6 @@ foobar		IN	CNAME	foo.example.com.
 TEXT
 
 is($text, $zonetext, "Saving zone to file");
-unlink($zone->{filename});
 
 $zone->replace({ name => "bar.example.com" });
 cmp_deeply($zone->rr, [ $rrs0, $rrs2 ], "Deleting RR by replace");
@@ -66,6 +65,15 @@ my $z2 = Net::DNS::ZoneParse->new({
 	})->zone("zone");
 cmp_deeply($z2->rr, [ $rrs0, $rrs1 ],
 	"Loading Zonefile via ZoneParse Interface");
+
+$zone->delall;
+if(-f $zone->{filename}) {
+	fail("Deleting zonefile");
+} else {
+	pass("Deleting zonefile");
+}
+
+cmp_deeply($zone->rr, noclass([]), "Deleting all RRs");
 
 SKIP: {
 	skip "Test::TestCoverage isn't installed", 1 unless $coverage;

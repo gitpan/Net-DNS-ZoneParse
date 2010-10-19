@@ -12,9 +12,11 @@ t/190_zone.db
 t/190_zone_coverage.t
 lib/Net/DNS/ZoneParse.pm
 lib/Net/DNS/ZoneParse/Generator/Native.pm
+lib/Net/DNS/ZoneParse/Generator/DNSZoneParse.pm
 lib/Net/DNS/ZoneParse/Parser/Native.pm
 lib/Net/DNS/ZoneParse/Parser/Native/DNSext.pm
 lib/Net/DNS/ZoneParse/Parser/NetDNSZoneParser.pm
-lib/Net/DNS/ZoneParse/Parser/ZFFast.pm
+lib/Net/DNS/ZoneParse/Parser/NetDNSZoneFileFast.pm
+lib/Net/DNS/ZoneParse/Parser/DNSZoneParse.pm
 lib/Net/DNS/ZoneParse/Zone.pm
 META.yml                                 Module meta-data (added by MakeMaker)

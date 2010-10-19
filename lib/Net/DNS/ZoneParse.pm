@@ -10,7 +10,7 @@ use Net::DNS;
 use Net::DNS::ZoneParse::Zone;
 
 @ISA = qw(Exporter);
-$VERSION = 0.101;
+$VERSION = 0.102;
 @EXPORT = qw( );
 %EXPORT_TAGS = (
 	parser => [ qw( parse writezone ) ],
@@ -159,6 +159,11 @@ Net::DNS::ZoneParse::Parser. The default is [ "Native" ]. All
 Parsers in the list will be used consecutively unless one has returned
 contents of the file to read.
 
+=item parser_args
+
+A hashref with parser-names as keys. Some parser may allow further
+options; these can be accessed using this argument.
+
 =item generator
 
 The generators to use when generating a new zonefile. The use is corresponding
@@ -250,6 +255,24 @@ sub extent {
 
 =pod
 
+=head3 uncache
+
+	$parser->uncache("example.com");
+
+Uncaching removes a zone from the zonecache. The exported instances of this zone
+will stay alive, but the next call to zone() will generate a new object.
+
+=cut
+
+sub uncache {
+	my ($self, $zone) = @_;
+
+	return unless $self->{$zone};
+	delete $self->{$zone};
+}
+
+=pod
+
 =head2 EXPORT
 
 =head3 writezone
@@ -305,9 +328,11 @@ sub writezone {
 	return unless $param{rr};
 
 	for(@{$param{generator}}) {
-		my $mod = "Net::DNS::ZoneParse::Generator::$_";
+		my $gen = $_;
+		my $mod = "Net::DNS::ZoneParse::Generator::$gen";
 		eval "require $mod";
 		next if $@;
+		$param{parser_arg} = $param{parser_args}->{$gen} || {};
 		my $ret = $mod->generate(\%param);
 		return $ret if $ret;
 	}
@@ -356,6 +381,12 @@ Resource Records, which will be added to these found in the file
 =item nocache
 
 if given, the parsed file will not be cached in the object.
+
+=item parser
+
+=item parser_args
+
+Same as in the call of new().
 
 =back
 

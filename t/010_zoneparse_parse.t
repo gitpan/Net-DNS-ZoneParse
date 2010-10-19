@@ -3,9 +3,7 @@
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
-
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Test::Deep;
 BEGIN { use_ok('Net::DNS::ZoneParse') };
 
@@ -43,20 +41,18 @@ my $result = [
 
 my $pos = tell(DATA);
 
+my @fres = @{$result}[1..$#{$result}];
+
 SKIP: {
 	eval { require Net::DNS::ZoneFile::Fast; };
-
 	skip "Net::DNS::ZoneFile::Fast isn't installed", 1 if $@;
 
 	<DATA>;
-
-	my @fres = @{$result}[1..3];
 	cmp_deeply(Net::DNS::ZoneParse::parse({
 			       	fh => \*DATA,
-			       	parser => [ qw(ZFFast) ],
+			       	parser => [ qw(NetDNSZoneFileFast) ],
 			}),
 		noclass(\@fres), "Parsing via Net::DNS::ZoneFile::Fast");
-
 	$. = 0;
 	seek(DATA, $pos, 0);
 };
@@ -66,8 +62,6 @@ SKIP: {
 	skip "Net::DNS::Zone::Parser isn't installed", 1 if $@;
 
 	<DATA>;
-
-	my @fres = @{$result}[1..3];
 	cmp_deeply(Net::DNS::ZoneParse::parse({
 				fh => \*DATA,
 				parser => [ qw(NetDNSZoneParser) ],
@@ -78,11 +72,27 @@ SKIP: {
 				},
 			}),
 		noclass(\@fres), "Parsing via Net::DNS::Zone::Parser");
-
 	$. = 0;
 	seek(DATA, $pos, 0);
 
-}
+};
+
+SKIP: {
+	eval { require DNS::ZoneParse; };
+	skip "DNS::ZoneParse isn't installed", 1 if $@;
+
+	<DATA>;
+	my $res = Net::DNS::ZoneParse::parse({
+			fh => \*DATA,
+			parser => [ qw(DNSZoneParse) ],
+			origin => "example.com",
+		});
+	cmp_deeply($res, noclass([ $fres[1], $fres[0], $fres[2]] ),
+		"Parsing via DNS::ZoneParse");
+	$. = 0;
+	seek(DATA, $pos, 0);
+
+};
 
 my $zoneparse = Net::DNS::ZoneParse->new();
 cmp_deeply($zoneparse->parse(\*DATA), noclass($result), "Parsing native");

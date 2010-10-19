@@ -1,4 +1,4 @@
-use Test::More tests => 9;
+use Test::More tests => 11;
 use Test::Deep;
 
 my $module;
@@ -49,6 +49,10 @@ is($file, $zone, "Dumping Zonefile");
 $zp->extent("example.com", $rrs2);
 $res = $zp->zone("example.com");
 cmp_deeply($res->{rr}, [ @{$rrs}, @{$rrs2} ] , "Testing cache");
+is(ref($zp->{"example.com"}), "Net::DNS::ZoneParse::Zone",
+	"Access of zoneobject");
+$zp->uncache("example.com");
+is($zp->{"example.com"}, undef, "Removing zone from cache");
 
 SKIP: {
 	skip "Test::TestCoverage isn't installed", 1 unless $coverage;
@@ -62,7 +66,7 @@ SKIP: {
 	Test::Pod::Coverage::pod_coverage_ok(
 		"Net::DNS::ZoneParse::Parser::Native" );
 	Test::Pod::Coverage::pod_coverage_ok(
-		"Net::DNS::ZoneParse::Parser::ZFFast" );
+		"Net::DNS::ZoneParse::Parser::NetDNSZoneFileFast" );
 	Test::Pod::Coverage::pod_coverage_ok(
 		"Net::DNS::ZoneParse::Generator::Native" );
 
