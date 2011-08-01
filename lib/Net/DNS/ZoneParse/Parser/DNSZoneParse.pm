@@ -8,13 +8,13 @@ use vars qw($VERSION);
 use Net::DNS;
 use DNS::ZoneParse;
 
-$VERSION = 0.10;
+$VERSION = 0.103;
 
 =pod
 
 =head1 NAME
 
-Net::DNS::ZoneParse::Parser::NetDNSZoneParse - Glue for Net::DNS::ZoneParse to
+Net::DNS::ZoneParse::Parser::DNSZoneParse - Glue for Net::DNS::ZoneParse to
 use DNS::ZoneParse.
 
 =head1 DESCRIPTION

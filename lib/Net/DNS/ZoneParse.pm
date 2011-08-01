@@ -10,7 +10,7 @@ use Net::DNS;
 use Net::DNS::ZoneParse::Zone;
 
 @ISA = qw(Exporter);
-$VERSION = 0.102;
+$VERSION = 0.103;
 @EXPORT = qw( );
 %EXPORT_TAGS = (
 	parser => [ qw( parse writezone ) ],

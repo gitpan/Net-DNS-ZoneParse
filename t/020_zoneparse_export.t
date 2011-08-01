@@ -32,7 +32,7 @@ SKIP: {
 	skip "DNS::ZoneParse isn't installed", 1 if $@;
 	my $dzpres = <<"DZPRR";
 ;
-;  Database file unknown for  zone.
+;  Database file unknown for example.com. zone.
 ;	Zone version: 
 ;
 
@@ -51,7 +51,11 @@ SKIP: {
 bar.example.com	0	IN	A	10.0.0.1
 foo.example.com	0	IN	CNAME	bar.example.com
 DZPRR
-	is(writezone($rrs, { generator => [ qw( DNSZoneParse ) ] }), $dzpres,
+	is(writezone($rrs, {
+				generator => [ qw( DNSZoneParse ) ],
+				origin => "example.com",
+				ttl => 3600,
+		       	}), $dzpres,
 		"Generating file using DNS::ZoneParse");
 };
 

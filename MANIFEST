@@ -6,6 +6,7 @@ t/001_load.t
 t/010_zoneparse_parse.t
 t/011_zoneparse_directives.t
 t/011_inner.db
+t/012_zoneparse_nsec3.t
 t/020_zoneparse_export.t
 t/090_zoneparse_coverage.t
 t/190_zone.db

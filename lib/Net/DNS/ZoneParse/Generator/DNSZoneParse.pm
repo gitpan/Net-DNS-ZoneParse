@@ -12,7 +12,7 @@ use Net::DNS::ZoneParse::Parser::DNSZoneParse;
 my %soamap = %Net::DNS::ZoneParse::Parser::DNSZoneParse::soamap;
 my %rrmap = %Net::DNS::ZoneParse::Parser::DNSZoneParse::rrmap;
 
-$VERSION = 0.102;
+$VERSION = 0.103;
 
 =pod
 

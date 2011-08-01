@@ -9,7 +9,7 @@ use Net::DNS;
 
 require Net::DNS::ZoneParse::Parser::Native::DNSext
 	unless Net::DNS::RR->can("new_from_filestring");
-$VERSION = 0.10;
+$VERSION = 0.103;
 
 =pod
 
@@ -36,7 +36,7 @@ my $_matchparentheses;
 $_matchparentheses = qr/(?>[^()]+|\((??{$_matchparentheses})\))*/;
 
 # This RE matches any possible TTL - with bind extensions
-my $_dns_ttlre = qr/(\d+[\dwdhms]*)/;
+my $_dns_ttlre = qr/^(\d+[\dwdhms]*)$/;
 
 # This contains the functions for the different directives defined in RFC1035
 # and the BIND-extension $TTL and $GENERATE
